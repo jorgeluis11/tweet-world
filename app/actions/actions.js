@@ -21,7 +21,7 @@ let actions = {
             .then((response) => {
                 return response.json();
             });
-            
+
             dispatch({
                     type: "GET_LIST",
                     result: response.items,
@@ -31,7 +31,7 @@ let actions = {
     },
         getToggledList: function(list) {
         return async function(dispatch) {
-            if (list.length === 0) 
+            if (list.length === 0)
                 {
                     dispatch({
                     type: "GET_LIST",
@@ -39,27 +39,27 @@ let actions = {
                 };
 
             var newList = list.filter((elem,i) => {
-                    return elem.active 
-                      
-                }); 
+                    return elem.active
 
-            newList = newList.map((elem,i) => { 
+                });
+
+            newList = newList.map((elem,i) => {
                     return elem.name;
                 }).join(",");
 
-            
+
             const response = await fetch(`http://gruponaso.herokuapp.com/?start=0&index=0&list=${newList}`)
             .then((response) => {
                 return response.json();
             });
-            
+
             // Promise.all([
-                
+
                 dispatch({
                     type: "GET_LIST",
                     result: response.items})
                 // ])
-            
+
         }
     }
 }
@@ -85,10 +85,10 @@ let actions = {
 //                 todo: response.json().results(),
 //             });
 //         })
-      
+
 //     }
 // };
 
 
 
-export default actions
+export default actions;
