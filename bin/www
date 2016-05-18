@@ -1,0 +1,189 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('worldtweets:server');
+var http = require('http');
+
+var Twit = require('twit')
+
+var T = new Twit({
+  consumer_key: 'MBkIpIKnDEIthw6KiSpx56Hwr',
+  consumer_secret: 'nuARAL6P29LF502iqgyKKx96kCIYHbzuBAu71l5z16GInB3yA0',
+  access_token: '252000999-CqVj4LOvkCZJvhP3VBFhwrOOtSt4ypvWevDwJcpo',
+  access_token_secret: '9ZpQJi80zR0LjPdHsN85ZoXVsNbkpayCZ41AMMjdaYuyA',
+  timeout_ms:           60*1000,  // optional HTTP request timeout to ap
+})
+// console.log(twit);
+
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.Server(app);
+var io = require('socket.io')(server);
+
+// http.listen(3000, function(){
+//   console.log('listening on *:3000');
+// });
+
+/**
+ * Listen on provided por//t, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+var bounds_for_socket={};
+var clients=[];  // the list of connected clients
+
+
+
+
+
+
+// stream._events.tweet();
+// console.log(stream);
+//
+/*stream.on('tweet', function (tweet) {
+  if(tweet.geo){
+    var coords=tweet.geo.coordinates;
+    clients.forEach(function(socket){
+      var currentBounds=bounds_for_socket[socket.id];
+
+      if(currentBounds&&(coords[1]>currentBounds[0])
+                      &&(coords[0]>currentBounds[1])
+                      &&(coords[1]<currentBounds[2])
+                      &&(coords[0]<currentBounds[3])){
+
+        totalSent+=1;
+        if(totalSent%100==0)console.log("Sent:"+totalSent);
+        var smallTweet={
+          text:tweet.text,
+          user:{   screen_name:       tweet.user.screen_name,
+                   profile_image_url: tweet.user.profile_image_url,
+                   id_str:            tweet.user.id_str},
+          geo: tweet.geo
+        };
+        socket.emit('stream',smallTweet);
+      }
+    });
+  }
+});*/
+
+var tweetsList = [];
+
+var puertoRico = [ '-68.1109','17.7307','-65.0914','18.6664' ]
+var stream = T.stream('statuses/filter', { locations: puertoRico })
+
+  // app.listen(3000);
+  io.sockets.on('connection', function (socket) {
+
+    socket.on('disconnect',function(socket){
+      //  Here we try to get the correct element in the
+      //  client list
+      for(var i=0;i<clients.length;i++){
+        client=clients[i];
+        if(client.client.id==this.id){clients.splice(i,1)}
+      }
+      delete bounds_for_socket[this.id];
+
+    });
+    clients.push(socket); // Update the list of con. clients
+
+
+    socket.on('change location', function (data) {
+      console.log("test");
+      // stream.emit("tweet");
+    });
+
+    // currentBounds=JSON.parse(socket.handshake.query.bounds);
+    // bounds_for_socket[socket.id]=currentBounds;
+
+    stream.on('error',function(error){
+      console.log(error);
+    });
+
+    stream.on('limit', function (limitMessage) {
+      console.log("Limit:"+JSON.stringify(limitMessage));
+    });
+
+    stream.on('tweet', function (tweet) {
+      // tweetsList.push(tweet);
+      console.log(tweet["text"]);
+      socket.broadcast.emit('call tweets', tweet);
+    })
+
+  });
