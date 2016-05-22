@@ -14,7 +14,7 @@ import Marker from '../components/marker'
 
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import GoogleMap from 'google-map-react';
-var Menu = require('react-burger-menu').slide;
+var Menu = require('react-burger-menu').push;
 
 let socket = io(`http://localhost:3000`)
 
@@ -39,17 +39,28 @@ class Main extends Component {
     event.preventDefault();
   }
 
+  renderMarkers(tweet){
+    const place = tweet.place.bounding_box.coordinates[0];
+    // let  lat= puertoRico[1] + Math.random() * (puertoRico[3] - puertoRico[1])
+    // let lng = puertoRico[0] + Math.random() * (puertoRico[2] - puertoRico[0])
+    let lng = (place[0][0] + place[1][0] + place[2][0] + place[3][0]) / 4
+    let lat = (place[1][1] + place[1][1] + place[1][1] + place[1][1]) / 4
+    return <Marker lat={lat} lng={lng} styles={{"width":"10px","height":"10px", fontSize:"1em"}} tweet={tweet} key={newId()}/>;
+
+  }
+
   shouldComponentUpdate = shouldPureComponentUpdate;
 
   render() {
+
     return (
       <div className="map-container">
         <div id="outer-container">
           <Menu styles={styles} customBurgerIcon={ <div><i className="glyphicon glyphicon-menu-hamburger" style={{fontSize:"2em"}}></i></div> } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } right  >
-            <a id="home" className="menu-item" href="/">Home</a>
-             <a id="about" className="menu-item" href="/about">About</a>
-             <a id="contact" className="menu-item" href="/contact">Contact</a>
-             <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
+            {
+              this.props.list.map((tweet) => <Tweet tweet={tweet} key={newId()}/>)
+            }
+
           </Menu>
           <main id="page-wrap">
           </main>
@@ -58,7 +69,10 @@ class Main extends Component {
           style={{width:'100%', height:'100%', position:"absolute"}}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}>
-            <Marker lat={18.257503} lng={-66.481117} styles={{"width":"100px","height":"100px"}} text={'A'}/>
+          {
+             this.props.list.map((tweet) => this.renderMarkers(tweet))
+
+          }
         </GoogleMap>
 
       </div>
@@ -66,10 +80,17 @@ class Main extends Component {
   }
 }
 // {
+// x = minLat + rand(maxLat - minLat)
+//     y = minLng + rand(maxLng - minLng)
+//     latLng = [x,y]
 //   //  this.props.list.map((tweet) => <Tweet tweet={tweet} key={newId()}/>)
+
 //  }
 
 var styles = {
+  bmMenuWrap:{
+    width: "30%"
+  },
   bmBurgerButton: {
     position: 'fixed',
     width: '36px',
@@ -88,8 +109,9 @@ var styles = {
     background: '#bdc3c7'
   },
   bmMenu: {
-    background: '#373a47',
-    padding: '2.5em 1.5em 0',
+    background: 'white',
+    // padding: '2.5em 1.5em 0',
+    paddingTop:"30px",
     fontSize: '1.15em'
   },
   bmMorphShape: {
@@ -97,7 +119,7 @@ var styles = {
   },
   bmItemList: {
     color: '#b8b7ad',
-    padding: '0.8em'
+    // padding: '0.8em'
   },
   bmOverlay: {
     background: 'rgba(0, 0, 0, 0.3)'

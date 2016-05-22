@@ -11,7 +11,7 @@ export default function reducer(state, action) {
 				loading:!state.loading
 				});
 		case "ADD_LIST":
-			return Object.assign({}, state, ...state.list, {
+			return Object.assign({
 					list:[action.tweet,...state.list],
 					loading:false
 				});
