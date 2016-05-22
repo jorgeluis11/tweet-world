@@ -13,7 +13,7 @@ class Routes extends Component {
   render() {
     return (
       <Provider store={store}>
-          <Main store={store}/>
+          <Main/>
       </Provider>
     );
   }

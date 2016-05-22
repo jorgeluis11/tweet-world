@@ -3,66 +3,72 @@ import ReduxThunk from 'redux-thunk'
 
 let actions = {
 		// },
-        toggleGroupon: function(id){
+        // toggleGroupon: function(id){
+        //     return {
+        //         type:"Toggle_Groupon",
+        //         id
+        //     }
+        // },
+
+				addList: function(tweet){
             return {
-                type:"Toggle_Groupon",
-                id
+                type:"ADD_LIST",
+                tweet
             }
         },
         loading: function(){
             return {
-                type:"LOADING_GROUPON",
+                type:"LOADING",
             }
         },
+	}
 
-		getGrouponList: function() {
-        return async function(dispatch) {
-            var response = await fetch(`http://gruponaso.herokuapp.com/?start=0&index=0&list=gustazos`)
-            .then((response) => {
-                return response.json();
-            });
-
-            dispatch({
-                    type: "GET_LIST",
-                    result: response.items,
-              })
-            return response
-        }
-    },
-        getToggledList: function(list) {
-        return async function(dispatch) {
-            if (list.length === 0)
-                {
-                    dispatch({
-                    type: "GET_LIST",
-                    result: []})
-                };
-
-            var newList = list.filter((elem,i) => {
-                    return elem.active
-
-                });
-
-            newList = newList.map((elem,i) => {
-                    return elem.name;
-                }).join(",");
-
-
-            const response = await fetch(`http://gruponaso.herokuapp.com/?start=0&index=0&list=${newList}`)
-            .then((response) => {
-                return response.json();
-            });
+		// getGrouponList: function() {
+    //     return async function(dispatch) {
+    //         var response = await fetch(`http://gruponaso.herokuapp.com/?start=0&index=0&list=gustazos`)
+    //         .then((response) => {
+    //             return response.json();
+    //         });
+		//
+    //         dispatch({
+    //                 type: "GET_LIST",
+    //                 result: response.items,
+    //           })
+    //         return response
+    //     }
+    // },
+        // getToggledList: function(list) {
+        // return async function(dispatch) {
+        //     if (list.length === 0)
+        //         {
+        //             dispatch({
+        //             type: "GET_LIST",
+        //             result: []})
+        //         };
+				//
+        //     var newList = list.filter((elem,i) => {
+        //             return elem.active
+				//
+        //         });
+				//
+        //     newList = newList.map((elem,i) => {
+        //             return elem.name;
+        //         }).join(",");
+				//
+				//
+        //     const response = await fetch(`http://gruponaso.herokuapp.com/?start=0&index=0&list=${newList}`)
+        //     .then((response) => {
+        //         return response.json();
+        //     });
 
             // Promise.all([
 
-                dispatch({
-                    type: "GET_LIST",
-                    result: response.items})
+                // dispatch({
+                //     type: "GET_LIST",
+                //     result: response.items})
                 // ])
 
-        }
-    }
-}
+        // }
 
 
 

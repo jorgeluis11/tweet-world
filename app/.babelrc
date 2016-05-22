@@ -3,5 +3,9 @@
     "react",
     "babel-preset-es2015",
     "babel-preset-stage-3"
-  ]
+  ],
+  "plugins": [
+   "syntax-class-properties",
+   "transform-class-properties"
+]
 }

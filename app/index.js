@@ -7,16 +7,4 @@ import Routes from './config/routes'
 // import './css/bootstrap.min.css'
 import './css/style.css'
 
-
-
-// class Main extends Component {
-//   render() {
-//     return (
-//       <div>
-//         Map here
-//       </div>
-//     );
-//   }
-// }
-
 render(<Routes/>, document.getElementById('app'))

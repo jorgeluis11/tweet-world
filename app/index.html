@@ -4,45 +4,14 @@
   <meta charset="UTF-8">
   <title>Alcupone</title>
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+  <script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEbV8vEqNz23z3woseCSSZZgCx_Ssz4A0&libraries=geometry">
+  </script>  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+ -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
-    <div id="tweets">
-    </div>
-
-    <script id="template" type="text/template">
-      <center style="width:500px; margin:0 auto;">
-        {{#tweets}}
-        <div class="row" style="padding:10px; border: 1px solid rgba(0,0,0,0.1); margin: 10px !important; border-radius: 5px;" >
-          <div class="col-sm-2" >
-            <img src="{{user.profile_image_url}}"></img>
-            <br>
-            {{user.name}}
-          </div>
-          <div class="col-sm-8" style="color:#{{user.profile_text_color}}; text-align:left;">
-            {{text}}
-          </div>
-        </div>
-        {{/tweets}}
-      </center>
-
-    </script>
-  <div id="app" class="container"></div>
+  <div id="app"></div>
 </body>
 </html>
-
-
-<script>
-  var socket = io('http://localhost:3000');
-  var tweets = []
-  socket.on('call tweets',function(tweet){
-    console.log(tweet);
-    tweets.unshift(tweet);
-    var template = $("#template").html();
-    var output = Mustache.render( template, {tweets:tweets} );
-    $("#tweets").html(output);
-  });
-
-</script>

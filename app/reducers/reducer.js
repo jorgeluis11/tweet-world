@@ -6,23 +6,23 @@ function getId(state){
 
 export default function reducer(state, action) {
 	switch(action.type){
-		case "LOADING_GROUPON":
+		case "LOADING":
 			return Object.assign({}, state, ...state.list, {
 				loading:!state.loading
 				});
-		case "GET_LIST":
+		case "ADD_LIST":
 			return Object.assign({}, state, ...state.list, {
-				list:[...action.result],
-				loading:false
+					list:[action.tweet,...state.list],
+					loading:false
 				});
-		case "Toggle_Groupon":
-			state.grouponList.map(toggle=>{
-				toggle.active = false;
-			});
-			state.grouponList[action.id].active = !state.grouponList[action.id].active;
-			return Object.assign({}, state, ...state.grouponList, {
-				grouponList:[...state.grouponList]
-				});
+		// case "Toggle_Groupon":
+		// 	state.grouponList.map(toggle=>{
+		// 		toggle.active = false;
+		// 	});
+		// 	state.grouponList[action.id].active = !state.grouponList[action.id].active;
+		// 	return Object.assign({}, state, ...state.grouponList, {
+		// 		grouponList:[...state.grouponList]
+		// 		});
 		default:
 			return state;
 	}

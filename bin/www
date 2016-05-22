@@ -147,7 +147,26 @@ var tweetsList = [];
 
 var puertoRico = [ '-68.1109','17.7307','-65.0914','18.6664' ]
 var stream = T.stream('statuses/filter', { locations: puertoRico })
+stream.on('error',function(error){
+  console.log(error);
+});
 
+stream.on('limit', function (limitMessage) {
+  console.log("Limit:"+JSON.stringify(limitMessage));
+});
+
+stream.on('tweet', function (tweet) {
+  // tweetsList.push(tweet);
+  // console.log(tweet["text"]);
+  // for(var i=0;i<clients.length;i++){
+  //   client=clients[i];
+  //   if(client.client.id==this.id){clients.splice(i,1)}
+  // }
+  if (clients.length !== 0) {
+    clients[0].broadcast.emit('call tweets', tweet);
+
+  }
+})
   // app.listen(3000);
   io.sockets.on('connection', function (socket) {
 
@@ -161,6 +180,7 @@ var stream = T.stream('statuses/filter', { locations: puertoRico })
       delete bounds_for_socket[this.id];
 
     });
+
     clients.push(socket); // Update the list of con. clients
 
 
@@ -172,18 +192,6 @@ var stream = T.stream('statuses/filter', { locations: puertoRico })
     // currentBounds=JSON.parse(socket.handshake.query.bounds);
     // bounds_for_socket[socket.id]=currentBounds;
 
-    stream.on('error',function(error){
-      console.log(error);
-    });
 
-    stream.on('limit', function (limitMessage) {
-      console.log("Limit:"+JSON.stringify(limitMessage));
-    });
-
-    stream.on('tweet', function (tweet) {
-      // tweetsList.push(tweet);
-      console.log(tweet["text"]);
-      socket.broadcast.emit('call tweets', tweet);
-    })
 
   });
