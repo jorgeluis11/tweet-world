@@ -248,3 +248,8 @@ height: 450px;
 .super-crazy-colors{
   color: white;
 }*/
+
+.profile-picture{
+    width: 100%;
+    border-radius: 5px;
+  }

@@ -145,7 +145,9 @@ var clients=[];  // the list of connected clients
 
 var tweetsList = [];
 
-var puertoRico = [ '-68.1109','17.7307','-65.0914','18.6664' ]
+// var puertoRico = [ '-68.1109','17.7307','-65.0914','18.6664' ]
+var puertoRico = [ '-13.05','36.07','9.71','49.58']
+// var puertoRico = [ '-9.67','36.24','6.42','50.18']
 var stream = T.stream('statuses/filter', { locations: puertoRico })
 stream.on('error',function(error){
   console.log(error);
@@ -156,8 +158,9 @@ stream.on('limit', function (limitMessage) {
 });
 
 stream.on('tweet', function (tweet) {
+  // console.log(tweet)
   // tweetsList.push(tweet);
-  // console.log(tweet["text"]);
+  console.log(tweet["text"]);
   // for(var i=0;i<clients.length;i++){
   //   client=clients[i];
   //   if(client.client.id==this.id){clients.splice(i,1)}

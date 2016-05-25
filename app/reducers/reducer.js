@@ -12,7 +12,7 @@ export default function reducer(state, action) {
 				});
 		case "ADD_LIST":
 			return Object.assign({
-					list:[action.tweet,...state.list],
+					list:[...state.list,action.tweet],
 					loading:false
 				});
 		// case "Toggle_Groupon":
