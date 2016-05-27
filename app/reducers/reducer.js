@@ -1,3 +1,6 @@
+import update from 'react-addons-update';
+
+
 function getId(state){
 	return state.todos.reduce((maxId, todo) => {
 		return Math.max(todo.id, maxId);
@@ -15,6 +18,18 @@ export default function reducer(state, action) {
 					list:[...state.list,action.tweet],
 					loading:false
 				});
+		case "HOVER_TWEET":
+			// state.list.findIndex(m => m.get('id') === markerId);
+			// console.log("state",state);
+			// console.log("id",action.id)
+			const index = state.list.findIndex(m => m.id == action.id);
+			// console.log("index",index);
+			state.list[index].hover = action.hover;
+			return Object.assign({
+					list:[...state.list],
+					loading:false
+				});
+
 		// case "Toggle_Groupon":
 		// 	state.grouponList.map(toggle=>{
 		// 		toggle.active = false;

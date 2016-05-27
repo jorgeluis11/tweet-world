@@ -145,8 +145,10 @@ var clients=[];  // the list of connected clients
 
 var tweetsList = [];
 
-// var puertoRico = [ '-68.1109','17.7307','-65.0914','18.6664' ]
-var puertoRico = [ '-13.05','36.07','9.71','49.58']
+var puertoRico = [ '-68.1109','17.7307','-65.0914','18.6664' ]
+// var puertoRico = [ '0.57','40.58','3.16','42.34' ]
+
+// var puertoRico = [ "-3.834162","40.312064","-3.524912","40.563845" ]
 // var puertoRico = [ '-9.67','36.24','6.42','50.18']
 var stream = T.stream('statuses/filter', { locations: puertoRico })
 stream.on('error',function(error){

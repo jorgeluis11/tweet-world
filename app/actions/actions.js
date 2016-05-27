@@ -21,6 +21,13 @@ let actions = {
                 type:"LOADING",
             }
         },
+        hoverTweet: function(id, hover){
+            return {
+                type:"HOVER_TWEET",
+								id,
+								hover
+            }
+        },
 	}
 
 		// getGrouponList: function() {

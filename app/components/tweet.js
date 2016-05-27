@@ -5,6 +5,7 @@ import shouldPureComponentUpdate from 'react-pure-render/function';
 class Tweet extends Component{
   constructor(props){
     super(props)
+    // props.tweet.hover = false;
   }
   componentWillUpdate (nextProps, nextState) {
       // console.log('----');
@@ -14,18 +15,33 @@ class Tweet extends Component{
   // shouldComponentUpdate = shouldPureComponentUpdate;
 
   //
-  shouldComponentUpdate(nextProps, nextState) {
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return false;
+  // }
 
   render(){
     var tweet = this.props.tweet;
+
+    if (tweet.hover)
+    {
+      // var font = "3em"
+      var background = "rgba(0,0,0,0.07)";
+      // var color = "#000";
+      var border = "solid 1px rgba(0,0,0,.080)";
+    }
+    else{
+      // var text ="";
+      // var font = "1.4em"
+      var background = "#fff";
+      var border = "solid 1px rgba(0,0,0,.080)";
+
+    }
     // var image =
     return(
-      <LazyLoad height={140} once >
+      <LazyLoad height={140} offset={300} once >
 
-        <div className="row" style={{borderBottom:"solid 1px rgba(0,0,0,.2)", marginBottom:"10px !important", paddingBottom:"10px !important"}} >
-          <div className="col-sm-3" style={{paddingRight:"0 !important"}}>
+        <div className="row" style={{borderBottom:border, paddingBottom:"10px !important", paddingTop:"25px !important", backgroundColor:background, height:"140px"}} >
+          <div className="col-sm-3" style={{paddingRight:"0 !important", backgroundColor:background}}>
 
               <img className="profile-picture " src={`https://twitter.com/${tweet.user.screen_name}/profile_image?size=original`}></img>
 

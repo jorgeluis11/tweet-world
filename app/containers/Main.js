@@ -44,47 +44,56 @@ class Main extends Component {
   }
 
   renderMarkers(tweet){
-    // const place = tweet.place.bounding_box.coordinates[0];
+    const place = tweet.place.bounding_box.coordinates[0];
     // console.log(place)
     // let  lat= puertoRico[1] + Math.random() * (puertoRico[3] - puertoRico[1])
     // let lng = puertoRico[0] + Math.random() * (puertoRico[2] - puertoRico[0])
-    // let lng = (place[0][0] + place[1][0] + place[2][0] + place[3][0]) / 4
-    // let lat = (place[1][1] + place[1][1] + place[1][1] + place[1][1]) / 4
+    let lng = (place[0][0] + place[1][0] + place[2][0] + place[3][0]) / 4
+    let lat = (place[1][1] + place[1][1] + place[1][1] + place[1][1]) / 4
     // <VirtualList items={this.props.items} renderItem={this.renderItem} itemHeight={this.props.itemHeight} />
-
-    return <Marker lat={tweet.place.bounding_box.coordinates[0][0][1]} lng={tweet.place.bounding_box.coordinates[0][0][0]} styles={{"width":"10px","height":"10px", fontSize:"1em"}} tweet={tweet} key={newId()}/>;
+    // let id = newId();
+    return <Marker lat={lat} lng={lng} styles={{"width":"10px","height":"10px", fontSize:"1em"}} tweet={tweet} id={tweet.id} key={tweet.id} />;
 
   }
 
   shouldComponentUpdate = shouldPureComponentUpdate;
 
   renderItem(tweet){
-    return (<Tweet tweet={tweet} key={newId()}/>);
+    // tweet.reactID = newId()
+    return (<Tweet tweet={tweet} key={tweet.reactID}/>);
   }
   //             <VirtualList items={this.props.list} renderItem={this.renderItem} itemHeight={300} />
 
   _onChildClick = (key, childProps) => {
     const markerId = childProps.tweet.get('id');
-    const index = this.props.tweet.findIndex(m => m.get('id') === markerId);
+    const index = this.props.list.findIndex(m => m.get('id') === markerId);
     if (this.props.onChildClick) {
       this.props.onChildClick(index);
     }
   }
 
   _onChildMouseEnter = (key, childProps) => {
-    // console.log(key)
     // console.log(childProps)
-    const markerId = childProps.tweet.get('id');
-    const index = this.props.tweet.findIndex(m => m.get('id') === markerId);
-    if (this.props.onMarkerHover) {
-      this.props.onMarkerHover(index);
-    }
+    // const markerId = childProps.tweet.get('id');
+    // console.log(key)
+    // console.log(childProps.reactID);
+    // const index = this.props.list.findIndex(m => m.reactID === key);
+    // console.log(index);
+    // if (this.props.onMarkerHover) {
+
+      // this.props.onMarkerHover(childProps);
+    // }
+    // console.log(key);
+    // console.log(childProps);
+    this.props.actions.hoverTweet(key,true);
   }
 
-  _onChildMouseLeave = (/* key, childProps */) => {
-    if (this.props.onMarkerHover) {
-      this.props.onMarkerHover(-1);
-    }
+  _onChildMouseLeave = (key, childProps) => {
+    // if (this.props.onMarkerHover) {
+    //   this.props.onMarkerHover(-1);
+    // }
+    // childProps.hoverFunc(false);
+    this.props.actions.hoverTweet(key,false);
   }
 
   _onBalloonCloseClick = () => {
@@ -92,17 +101,25 @@ class Main extends Component {
       this.props.onChildClick(-1);
     }
   }
+  //           <Menu styles={styles} customBurgerIcon={ <div><i className="glyphicon glyphicon-menu-hamburger" style={{fontSize:"2em"}}></i></div> } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } right  >
+  //           </Menu>
 
   render() {
     // console.log(this.props.list)
+    let tweets = [];
+    this.props.list.map((tweet) => {
+      // tweet.hover = false;
+      // tweet.id=newId();
+      tweets = [...tweets,tweet];
+    });
     return (
       <div className="map-container">
         <div id="outer-container">
-          <Menu styles={styles} customBurgerIcon={ <div><i className="glyphicon glyphicon-menu-hamburger" style={{fontSize:"2em"}}></i></div> } pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } right  >
+          <div style={{width:"30%", position:"absolute", right:"0px", zIndex:'2 !important', backgroundColor:"#fff",overflowY:"auto",height:"100%"}}>
             {
-              this.props.list.map((tweet) => <Tweet tweet={tweet} key={newId()}/>)
+              tweets.map((tweet) => <Tweet tweet={tweet} id={tweet.id} key={tweet.id}/>)
             }
-          </Menu>
+          </div>
           <main id="page-wrap">
           </main>
         </div>
@@ -114,8 +131,7 @@ class Main extends Component {
           onChildMouseEnter={this._onChildMouseEnter}
           onChildMouseLeave={this._onChildMouseLeave}>
           {
-             this.props.list.map((tweet) => this.renderMarkers(tweet) )
-
+             tweets.map((tweet) => this.renderMarkers(tweet)  )
           }
         </GoogleMap>
 
