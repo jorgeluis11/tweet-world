@@ -21,38 +21,39 @@ class Tweet extends Component{
 
   render(){
     var tweet = this.props.tweet;
+    var border = "solid 1px rgba(0,0,0,.080)";
 
     if (tweet.hover)
     {
       // var font = "3em"
       var background = "rgba(0,0,0,0.07)";
       // var color = "#000";
-      var border = "solid 1px rgba(0,0,0,.080)";
     }
     else{
       // var text ="";
       // var font = "1.4em"
       var background = "#fff";
-      var border = "solid 1px rgba(0,0,0,.080)";
 
     }
     // var image =
     return(
-      <LazyLoad height={140} offset={300} once >
+      <div id={tweet.uniqueID}>
+        <LazyLoad  height={140} offset={300} once >
 
-        <div className="row" style={{borderBottom:border, paddingBottom:"10px !important", paddingTop:"25px !important", backgroundColor:background, height:"140px"}} >
-          <div className="col-sm-3" style={{paddingRight:"0 !important", backgroundColor:background}}>
+          <div className="row" style={{borderBottom:border, paddingBottom:"10px !important", paddingTop:"25px !important", backgroundColor:background, height:"140px"}} >
+            <div className="col-sm-3" style={{paddingRight:"0 !important", overflow:"hidden", height:"100"}}>
 
-              <img className="profile-picture " src={`https://twitter.com/${tweet.user.screen_name}/profile_image?size=original`}></img>
+                <img className="profile-picture " src={`https://twitter.com/${tweet.user.screen_name}/profile_image?size=original`}></img>
 
-        </div>
-
-          <div className="col-sm-9"  style={{"textAlign":"left", paddingLeft:"10px"}}>
-            <div style={{fontSize:".9em", 'wordWrap': 'break-word', color:'#222'}}><b>{tweet.user.screen_name}</b></div>
-            <span style={{color:'#444'}}>{tweet.text}</span>
           </div>
-        </div>
-      </LazyLoad>
+
+            <div className="col-sm-9"  style={{"textAlign":"left", paddingLeft:"10px"}}>
+              <div style={{fontSize:".9em", 'wordWrap': 'break-word', color:'#222'}}><b>{tweet.user.screen_name}</b></div>
+              <span style={{color:'#444'}}>{tweet.text}</span>
+            </div>
+          </div>
+        </LazyLoad>
+      </div>
 
     );
   }

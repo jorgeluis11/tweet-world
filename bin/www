@@ -146,6 +146,7 @@ var clients=[];  // the list of connected clients
 var tweetsList = [];
 
 var puertoRico = [ '-68.1109','17.7307','-65.0914','18.6664' ]
+// var puertoRico = [ '-74.259094','40.477398','-73.700165','40.91758' ]
 // var puertoRico = [ '0.57','40.58','3.16','42.34' ]
 
 // var puertoRico = [ "-3.834162","40.312064","-3.524912","40.563845" ]

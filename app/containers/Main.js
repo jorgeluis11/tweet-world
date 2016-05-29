@@ -6,7 +6,6 @@ import configureStore from '../store/store'
 import actions from '../actions/actions'
 
 import io from 'socket.io-client'
-import newId from '../utils/newid';
 
 import Tweet from '../components/tweet'
 import Marker from '../components/marker'
@@ -15,6 +14,8 @@ import Marker from '../components/marker'
 
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import GoogleMap from 'google-map-react';
+// var $ = require("react-query");
+
 // import VirtualList from 'react-virtual-list';
 
 // import LazyRender from require('react-lazy-render');
@@ -24,7 +25,17 @@ let socket = io(`http://localhost:3000`)
 
 let store = configureStore()
 
+// const K_MARGIN_TOP = 30;
+// const K_MARGIN_RIGHT = 30;
+// const K_MARGIN_BOTTOM = 30;
+// const K_MARGIN_LEFT = 30;
+
+const K_HOVER_DISTANCE = 30;
+
 class Main extends Component {
+
+
+
   constructor(props) {
     super(props);
     socket.on('call tweets',function(tweet){
@@ -52,7 +63,7 @@ class Main extends Component {
     let lat = (place[1][1] + place[1][1] + place[1][1] + place[1][1]) / 4
     // <VirtualList items={this.props.items} renderItem={this.renderItem} itemHeight={this.props.itemHeight} />
     // let id = newId();
-    return <Marker lat={lat} lng={lng} styles={{"width":"10px","height":"10px", fontSize:"1em"}} tweet={tweet} id={tweet.id} key={tweet.id} />;
+    return <Marker lat={lat} lng={lng} styles={{"width":"10px","height":"10px", fontSize:"1em"}} tweet={tweet} key={tweet.uniqueID} />;
 
   }
 
@@ -85,8 +96,41 @@ class Main extends Component {
     // }
     // console.log(key);
     // console.log(childProps);
+    // console.log(key)
+
+    // console.log($("#marker-list"));
+    // console.log($(`${key}`));
+
+    let current = this.cumulativeOffset(document.getElementById("marker-list"))
+    let scroll = this.cumulativeOffset(document.getElementById(`${key}`));
+    this.scrollUp(current,scroll.top,document.getElementById("marker-list"));
+    // var doc = document.body,
+    // document.getElementById("marker-list").scrollTop = ;
     this.props.actions.hoverTweet(key,true);
   }
+
+  cumulativeOffset(element) {
+      var top = 0, left = 0;
+      do {
+          top += element.offsetTop  || 0;
+          left += element.offsetLeft || 0;
+          element = element.offsetParent;
+      } while(element);
+
+      return {
+          top: top,
+          left: left
+      };
+  }
+
+  scrollUp(current,top, div) {
+      //  var top = current - top;
+
+       if (top > 0) {
+           div.scrollTop = top - 280;
+          //  setTimeout(this.scrollUp(current,top, div), 100)
+       }
+   }
 
   _onChildMouseLeave = (key, childProps) => {
     // if (this.props.onMarkerHover) {
@@ -106,18 +150,18 @@ class Main extends Component {
 
   render() {
     // console.log(this.props.list)
-    let tweets = [];
-    this.props.list.map((tweet) => {
-      // tweet.hover = false;
-      // tweet.id=newId();
-      tweets = [...tweets,tweet];
-    });
+    // let tweets = [];
+    // this.props.list.map((tweet) => {
+    //   // tweet.hover = false;
+    //   // tweet.id=newId();
+    //   tweets = [...tweets,tweet];
+    // });
     return (
       <div className="map-container">
         <div id="outer-container">
-          <div style={{width:"30%", position:"absolute", right:"0px", zIndex:'2 !important', backgroundColor:"#fff",overflowY:"auto",height:"100%"}}>
+          <div id="marker-list" style={{width:"30%", position:"absolute", right:"0px", zIndex:'2 !important', backgroundColor:"#fff",overflowY:"auto",height:"100%"}}>
             {
-              tweets.map((tweet) => <Tweet tweet={tweet} id={tweet.id} key={tweet.id}/>)
+              this.props.list.map((tweet) => <Tweet tweet={tweet} id={tweet.id} key={tweet.uniqueID}/>)
             }
           </div>
           <main id="page-wrap">
@@ -129,9 +173,10 @@ class Main extends Component {
           defaultZoom={this.props.zoom}
           onChildClick={this._onChildClick}
           onChildMouseEnter={this._onChildMouseEnter}
-          onChildMouseLeave={this._onChildMouseLeave}>
+          onChildMouseLeave={this._onChildMouseLeave}
+          hoverDistance={7}>
           {
-             tweets.map((tweet) => this.renderMarkers(tweet)  )
+               this.props.list.map((tweet) => this.renderMarkers(tweet)  )
           }
         </GoogleMap>
 
