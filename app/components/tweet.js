@@ -18,6 +18,15 @@ class Tweet extends Component{
   // shouldComponentUpdate(nextProps, nextState) {
   //   return false;
   // }
+  onMouseEnterContainerTweet = () => {
+    this.props.onMouseEnterContainer(this.props.tweet.uniqueID, this.props.tweet);
+  }
+  onMouseLeaveContainerTweet = () => {
+    this.props.onMouseLeaveContainer(this.props.tweet.uniqueID);
+  }
+  onClickContainerTweet = () => {
+    this.props.onClickContainer(this.props.tweet);
+  }
 
   render(){
     var tweet = this.props.tweet;
@@ -35,9 +44,12 @@ class Tweet extends Component{
       var background = "#fff";
 
     }
+    // console.log(this.props.onMouseEnterContainer)
+
+    // console.log(this.props)
     // var image =
     return(
-      <div id={tweet.uniqueID}>
+      <div id={tweet.uniqueID} onMouseEnter={this.onMouseEnterContainerTweet}  onMouseLeave={this.onMouseLeaveContainerTweet} onClick={this.onClickContainerTweet}>
         <LazyLoad  height={140} offset={300} once >
 
           <div className="row" style={{borderBottom:border, paddingBottom:"10px !important", paddingTop:"25px !important", backgroundColor:background, height:"140px"}} >
