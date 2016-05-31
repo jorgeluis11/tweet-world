@@ -27,17 +27,17 @@ app.set('view engine', 'jade');
 // mongoose.connect("mongodb://127.0.0.1/mongo")
 // var User = mongoose.model("users", {name:String});
 
-app.get("/getUsers",function(req, res){
-  // var user = new User({name:"test"});
-  // user.save();
-  // mongoose.model("users").find(function(err, users){
-  //   res.json(users);
-  // });
-  // twit.get('https://api.twitter.com/1.1/geo/search.json',{query:'query'}, function(data) {
-  //     res.send(`Result: ${JSON.stringify(data)}`);
-  // });
-
-});
+// app.get("/getUsers",function(req, res){
+//   // var user = new User({name:"test"});
+//   // user.save();
+//   // mongoose.model("users").find(function(err, users){
+//   //   res.json(users);
+//   // });
+//   // twit.get('https://api.twitter.com/1.1/geo/search.json',{query:'query'}, function(data) {
+//   //     res.send(`Result: ${JSON.stringify(data)}`);
+//   // });
+//
+// });
 
 
 app.use(logger('dev'));
@@ -45,6 +45,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/', routes);
 // app.use('/tweet', users);

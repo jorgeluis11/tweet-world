@@ -1,12 +1,12 @@
 import React, {Component, PropTypes} from 'react'
-import TimerMixin from 'react-timer-mixin';
-var reactMixin = require('react-mixin');
+import io from 'socket.io-client'
+// import TimerMixin from 'react-timer-mixin';
+// var reactMixin = require('react-mixin');
 
 import {connect, Provider} from 'react-redux'
 import { bindActionCreators } from 'redux'
 import configureStore from '../store/store'
 import actions from '../actions/actions'
-import io from 'socket.io-client'
 import Tweet from '../components/tweet'
 import Marker from '../components/marker'
 import shouldPureComponentUpdate from 'react-pure-render/function';
@@ -260,7 +260,7 @@ function mapDispatchToProps(dispatch){
 //     store
 //   })
 // }
-reactMixin(Main, TimerMixin);
+// reactMixin(Main, TimerMixin);
 
 export default connect(state => state, mapDispatchToProps)(Main);
 // export default Main;

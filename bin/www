@@ -163,7 +163,7 @@ stream.on('limit', function (limitMessage) {
 stream.on('tweet', function (tweet) {
   // console.log(tweet)
   // tweetsList.push(tweet);
-  console.log(tweet["text"]);
+  // console.log(tweet["text"]);
   // for(var i=0;i<clients.length;i++){
   //   client=clients[i];
   //   if(client.client.id==this.id){clients.splice(i,1)}
