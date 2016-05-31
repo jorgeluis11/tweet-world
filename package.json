@@ -17,6 +17,7 @@
     "babel-plugin-syntax-class-properties": "^6.8.0",
     "babel-plugin-transform-class-properties": "^6.9.0",
     "bson": "^0.4.23",
+    "cookie-parser": "^1.4.3",
     "express": "~4.9.7",
     "express-handlebars": "~1.1.0",
     "google-map-react": "^0.12.1",
