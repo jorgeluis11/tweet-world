@@ -25,6 +25,7 @@
     "immutable": "^3.8.1",
     "install": "^0.6.2",
     "isomorphic-fetch": "^2.2.1",
+    "loose-envify": "^1.2.0",
     "mongoose": "^3.8.17",
     "morgan": "^1.7.0",
     "node-jsx": "~0.11.0",

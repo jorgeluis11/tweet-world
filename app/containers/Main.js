@@ -15,8 +15,8 @@ import GoogleMap from 'google-map-react';
 var Menu = require('react-burger-menu').push;
 // var scroll = Scroll.animateScroll;
 
-// let socket = io(`http://localhost:3000`)
-let socket = io(`https://worldtweet.herokuapp.com/socket.io/socket.io.js`)
+let socket = io(`http://localhost:3000`)
+// let socket = io(`https://worldtweet.herokuapp.com/socket.io/socket.io.js`)
 let store = configureStore()
 
 // const K_MARGIN_TOP = 30;
